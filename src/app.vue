@@ -412,7 +412,7 @@ const setActiveTabMobile = (tabName) => {
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 body {
-  background-color: #f5f5f5; 
+  background-color: #000000; 
 }
 
 .main-content-area {
