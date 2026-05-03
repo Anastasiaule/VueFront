@@ -25,10 +25,13 @@
                  Группы ({{ filters.groups.length }})
                </button>
                <ul class="dropdown-menu w-100" ref="dropdownMenuSubjectRef">
-                <li class="px-3 pb-2 border-bottom"><div class="d-flex justify-content-between align-items-center"><small class="text-muted">Выбрано: {{ filters.groups.length }}</small><div class="d-flex gap-2"><button class="btn btn-link btn-sm p-0" @click="selectAllGroups" v-if="filters.groups.length !== filterOptions.groups.length">Выбрать все</button><button v-if="filters.groups.length" class="btn btn-link btn-sm p-0" @click="filters.groups = []">Очистить</button></div></div></li>
+                <li class="px-3 pb-2 border-bottom"><div class="d-flex justify-content-between align-items-center"><small class="text-muted">Выбрано: {{ filters.groups.length }}</small><div class="d-flex gap-2">
+                  <!--<button class="btn btn-link btn-sm p-0" @click="selectAllGroups" v-if="filters.groups.length !== filterOptions.groups.length">Выбрать все</button>-->
+                  <button v-if="filters.groups.length" class="btn btn-link btn-sm p-0" @click="filters.groups = []">Очистить</button></div></div></li>
                 <li v-for="group in filterOptions.groups" :key="group"><label class="dropdown-item d-flex align-items-center gap-2 m-0"><input type="checkbox" class="form-check-input" v-model="filters.groups" :value="group">{{ group }}</label></li>
                 <li v-if="!filterOptions.groups.length" class="dropdown-item disabled">Нет групп</li>
                </ul>
+               
              </div>
            </div>
            <div class="col-md-9">
@@ -128,13 +131,18 @@ const fetchSubjectStats = async () => {
     else params.append('limit', '1000');
 
     try {
-        const data = await fetchData(`${API_BASE_URL}/statistics/subject/?${params.toString()}`);
-        if (data !== null) subjectStatsData.value = data;
+    const data = await fetchData(`${API_BASE_URL}/statistics/subject/?${params.toString()}`);
+    console.log('Ответ от API:', data);  // ← ДОБАВЬТЕ ЭТО
+    console.log('Тип данных:', typeof data);
+    console.log('Ключи объекта:', data ? Object.keys(data) : 'null');
+    
+    if (data !== null) subjectStatsData.value = data;
     } catch (err) {
-        error.value = err.message || 'Не удалось загрузить статистику по предмету.';
-        subjectStatsData.value = null;
+    console.error('Ошибка:', err);  // ← ДОБАВЬТЕ ЭТО
+    error.value = err.message || 'Не удалось загрузить статистику по предмету.';
+    subjectStatsData.value = null;
     } finally {
-        isLoading.value = false;
+    isLoading.value = false;
     }
 };
 
